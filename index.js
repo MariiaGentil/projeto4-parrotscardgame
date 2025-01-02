@@ -48,39 +48,46 @@ let indexDasCartas = 0
 let indexVencedor = 0
 let card1 = null
 let card2 = null
+let arrAux = []
 
 
 function selecionarCarta(elem, indice) {
     if (indexDasCartas < 1) {
+        if (card1 === null && (elem.style.backgroundImage === `` || elem.style.backgroundImage === `url("images/parrot.png")`)) {
+            card1 = elem
+        }else if (card2 === null && (elem.style.backgroundImage === `` || elem.style.backgroundImage === `url("images/parrot.png")`)) {
+            card2 = elem
+        }
         elem.style.backgroundImage = `url(images/${arrDeParrots[arrDeIdices[indice]]}.gif)`
         elem.style.transform = 'rotateY(180deg)'
         elem.style.transformStyle = 'preserve-3d'
         elem.style.transition = 'all .5s'
-        if (card1 === null) {
-            card1 = elem
-        } else if (card2 === null && elem !== card1) {
-            card2 = elem
-        }
-        
-        
+
         if (card1.style.backgroundImage !== card2.style.backgroundImage && card2 !== null) {
             setTimeout(function () {
                 card1.style.backgroundImage = `url(images/parrot.png)`
                 card1.style.transform = 'rotateY(0deg)'
                 card2.style.backgroundImage = `url(images/parrot.png)`
                 card2.style.transform = 'rotateY(0deg)'
-
+                
                 indexDasCartas = 0
                 card1 = null
                 card2 = null
             }, 500)
-
+            
         } else {
             setTimeout(function () {
-                indexDasCartas = 0
-                card1 = null
-                card2 = null
-                indexVencedor += 2
+                if(arrAux.includes(arrDeParrots[arrDeIdices[indice]])){
+                    indexDasCartas = 0
+                    card1 = null
+                    card2 = null
+                }else {
+                    indexVencedor += 2
+                    arrAux.push(arrDeParrots[arrDeIdices[indice]])
+                    indexDasCartas = 0
+                    card1 = null
+                    card2 = null
+                }
 
                 if (indexVencedor === parseFloat(inputInicio.value)) {
                     const vencedor = document.querySelector(".vencedor")
